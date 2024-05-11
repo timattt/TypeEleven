@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.shlimtech.typeeleven</groupId>
+    <artifactId>TypeEleven</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>TypeEleven</name>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ProtoCommon</module>
+        <module>MessengerCore</module>
+    </modules>
+</project>

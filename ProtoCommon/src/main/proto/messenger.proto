@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package org.shlimtech.typeeleven;
+
+option java_multiple_files = true;
+option java_package = "org.shlimtech.typeeleven.grpc";
+
+service Messenger {
+  rpc sendMessage(SendMessageRequest) returns (SendMessageResponse) {}
+  rpc getMessagesAfter(GetMessageAfterRequest) returns (GetMessageAfterResponse) {}
+  rpc getMessagesBefore(GetMessageBeforeRequest) returns (GetMessageBeforeResponse) {}
+}
+
+message GrpcMessage {
+  int32 id = 1;
+  string senderEmail = 2;
+  string receiverEmail = 3;
+  string content = 4;
+  int64 time = 5;
+}
+
+message SendMessageRequest {
+  GrpcMessage message = 1;
+}
+
+message SendMessageResponse {
+  int32 status = 1;
+}
+
+message GetMessageAfterRequest {
+  int64 time = 1;
+  string userEmail = 2;
+}
+
+message GetMessageAfterResponse {
+  repeated GrpcMessage messages = 1;
+}
+
+message GetMessageBeforeRequest {
+  int64 time = 1;
+  int32 count = 2;
+  string userEmail = 3;
+}
+
+message GetMessageBeforeResponse {
+  repeated GrpcMessage messages = 1;
+}
