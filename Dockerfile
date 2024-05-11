@@ -7,4 +7,8 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/MessengerCore/target/*.jar /app/*.jar
 
+RUN mkdir -p /root/.postgresql
+RUN wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document /root/.postgresql/root.crt
+RUN chmod 777 /root/.postgresql/root.crt
+
 ENTRYPOINT java -jar /app/*.jar
