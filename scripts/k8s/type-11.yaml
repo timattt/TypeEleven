@@ -22,6 +22,8 @@ spec:
         - name: type-11
           image: docker.io/timattt/type-11:latest
           imagePullPolicy: Always
+          ports:
+            - containerPort: 9090
           env:
             - name: TYPE6_DATABASE_USER
               value: default-user
@@ -69,7 +71,7 @@ data:
                           routes:
                             - match: { prefix: "/" }
                               route:
-                                cluster: greeter_service
+                                cluster: messenger_service
                                 max_stream_duration:
                                   grpc_timeout_header_max: 0s
                           cors:
@@ -90,7 +92,7 @@ data:
                         typed_config:
                           "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
       clusters:
-        - name: greeter_service
+        - name: messenger_service
           connect_timeout: 0.25s
           type: logical_dns
           # HTTP/2 support
@@ -107,5 +109,5 @@ data:
                   - endpoint:
                       address:
                         socket_address:
-                          address: type-11
+                          address: 127.0.0.1
                           port_value: 9090
