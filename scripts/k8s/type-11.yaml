@@ -25,6 +25,8 @@ spec:
           ports:
             - containerPort: 9090
           env:
+            - name: TYPE11_JWKS
+              value: http://type-6.default.svc.cluster.local:443/oauth2/jwks
             - name: TYPE11_POSTGRES_USER
               value: default-user
             - name: TYPE11_POSTGRES_URL
@@ -78,7 +80,7 @@ data:
                             allow_origin_string_match:
                               - prefix: "*"
                             allow_methods: GET, PUT, DELETE, POST, OPTIONS
-                            allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout
+                            allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,authorization
                             max_age: "1728000"
                             expose_headers: custom-header-1,grpc-status,grpc-message
                     http_filters:

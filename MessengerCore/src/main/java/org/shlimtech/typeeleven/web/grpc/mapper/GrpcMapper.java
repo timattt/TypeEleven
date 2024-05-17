@@ -1,4 +1,4 @@
-package org.shlimtech.typeeleven.grpc.mapper;
+package org.shlimtech.typeeleven.web.grpc.mapper;
 
 import org.shlimtech.typeeleven.domain.model.Message;
 import org.shlimtech.typeeleven.grpc.GrpcMessage;

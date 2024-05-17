@@ -1,22 +1,23 @@
-package org.shlimtech.typeeleven.grpc;
+package org.shlimtech.typeeleven.web.grpc;
 
-import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
-import net.devh.boot.grpc.server.service.GrpcService;
-import org.shlimtech.typeeleven.grpc.mapper.GrpcMapper;
+import org.lognet.springboot.grpc.GRpcService;
+import org.shlimtech.typeeleven.grpc.*;
+import org.shlimtech.typeeleven.web.grpc.mapper.GrpcMapper;
 import org.shlimtech.typeeleven.service.core.SimpleMessengerService;
+import org.springframework.security.access.annotation.Secured;
 
 @Log
-@GrpcService
+@GRpcService
 @RequiredArgsConstructor
 public class MessengerGrpcAdapter extends MessengerGrpc.MessengerImplBase {
     private final SimpleMessengerService simpleMessengerService;
     private final GrpcMapper grpcMapper;
 
     @Override
+    @Secured({})
     public void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
         log.info(request.toString());
         var message = request.getMessage();
@@ -26,6 +27,7 @@ public class MessengerGrpcAdapter extends MessengerGrpc.MessengerImplBase {
     }
 
     @Override
+    @Secured({})
     public void getMessagesAfter(GetMessageAfterRequest request, StreamObserver<GetMessageAfterResponse> responseObserver) {
         log.info(request.toString());
         responseObserver.onNext(GetMessageAfterResponse.newBuilder()
@@ -39,6 +41,7 @@ public class MessengerGrpcAdapter extends MessengerGrpc.MessengerImplBase {
     }
 
     @Override
+    @Secured({})
     public void getMessagesBefore(GetMessageBeforeRequest request, StreamObserver<GetMessageBeforeResponse> responseObserver) {
         log.info(request.toString());
         responseObserver.onNext(GetMessageBeforeResponse.newBuilder()
