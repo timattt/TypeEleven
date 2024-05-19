@@ -49,6 +49,12 @@ public class MessengerGrpcAdapter extends MessengerGrpc.MessengerImplBase {
     }
 
     @Override
+    public void listMessages(ListMessagesRequest request, StreamObserver<ListMessagesResponse> responseObserver) {
+        responseObserver.onNext(ListMessagesResponse.newBuilder().addAllMessages(messengerService.listMessages(request.getChatId(), request.getFromTime(), request.getCount()).stream().map(grpcMapper::toGrpcMessage).toList()).build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void receiveMessages(EmptyRequest request, StreamObserver<ExchangeResponse> responseObserver) {
         int userId = getUserId();
         if (connections.containsKey(userId)) {

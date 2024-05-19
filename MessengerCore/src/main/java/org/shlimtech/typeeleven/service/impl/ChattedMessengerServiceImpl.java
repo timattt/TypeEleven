@@ -10,6 +10,9 @@ import org.shlimtech.typeeleven.service.impl.repository.ChatRepository;
 import org.shlimtech.typeeleven.service.impl.repository.MessageRepository;
 import org.shlimtech.typesixbusinesslogic.domain.model.User;
 import org.shlimtech.typesixbusinesslogic.service.impl.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +34,15 @@ public class ChattedMessengerServiceImpl implements ChattedMessengerService {
     @Transactional
     public List<User> listAvailableUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<Message> listMessages(int chatId, long fromTime, int count) {
+        return messageRepository.findAllByChatEqualsAndTimeLessThan(
+                        chatRepository.findById(chatId).orElseThrow(() -> new MessengerException("No such chat")),
+                        fromTime,
+                        PageRequest.ofSize(count).withSort(Sort.by("time").descending())
+                );
     }
 
     @Override

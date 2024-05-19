@@ -23,7 +23,6 @@ message Type11Message {
 message Type11Chat {
   int32 id = 1;
   repeated int32 users = 2;
-  repeated Type11Message messages = 3;
 }
 
 // SERVICE
@@ -31,6 +30,7 @@ message Type11Chat {
 service Messenger {
   rpc listUsers(EmptyRequest) returns (ListUsersResponse) {}
   rpc listChats(EmptyRequest) returns (ListChatsResponse) {}
+  rpc listMessages(ListMessagesRequest) returns (ListMessagesResponse) {}
   rpc newChat(NewChatRequest) returns (NewChatResponse) {}
   rpc receiveMessages(EmptyRequest) returns (stream ExchangeResponse) {}
   rpc sendMessage(SendMessageRequest) returns (SendMessageResponse) {}
@@ -75,3 +75,12 @@ message ExchangeResponse {
   Type11Message message = 1;
 }
 
+message ListMessagesRequest {
+  int32 chatId = 1;
+  int64 fromTime = 2;
+  int32 count = 3;
+}
+
+message ListMessagesResponse {
+  repeated Type11Message messages = 1;
+}

@@ -35,7 +35,6 @@ public class GrpcMapper {
 
     public Type11Chat toGrpcChat(Chat chat) {
         return Type11Chat.newBuilder()
-                .addAllMessages(chat.getMessages() == null ? Collections.emptyList() : chat.getMessages().stream().map(this::toGrpcMessage).toList())
                 .setId(chat.getId())
                 .addAllUsers(chat.getActiveUsers())
                 .build();

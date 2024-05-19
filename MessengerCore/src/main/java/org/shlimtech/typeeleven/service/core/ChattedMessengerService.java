@@ -9,6 +9,7 @@ import java.util.List;
 public interface ChattedMessengerService {
     List<Chat> listChats(int userId);
     List<User> listAvailableUsers();
+    List<Message> listMessages(int chatId, long fromTime, int count);
     Chat createChat(List<Integer> users);
     Message newMessage(int senderId, int chatId, String content);
 }
