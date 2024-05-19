@@ -16,12 +16,13 @@ public class Message {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "sender_email")
-    private String senderEmail;
-    @Column(name = "receiver_email")
-    private String receiverEmail;
     @Column(name = "content")
     private String content;
     @Column(name = "time")
     private long time;
+    @ManyToOne
+    @JoinColumn(name = "chat_id", referencedColumnName = "id")
+    private Chat chat;
+    @Column(name = "sender_id")
+    private int senderId;
 }

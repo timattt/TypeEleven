@@ -12,5 +12,6 @@
     <modules>
         <module>ProtoCommon</module>
         <module>MessengerCore</module>
+        <module>TypeSixBusinessLogic</module>
     </modules>
 </project>

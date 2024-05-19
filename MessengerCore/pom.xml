@@ -66,6 +66,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.shlimtech.type-6.businessLogic</groupId>
+			<artifactId>TypeSixBusinessLogic</artifactId>
+			<version>0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
