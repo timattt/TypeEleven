@@ -11,6 +11,7 @@ import org.lognet.springboot.grpc.recovery.GRpcServiceAdvice;
 public class GrpcAdvisor {
     @GRpcExceptionHandler
     public Status handle(Exception exc, GRpcExceptionScope scope){
+        exc.printStackTrace();
         return Status.INTERNAL.withDescription(exc.getLocalizedMessage());
     }
 }
