@@ -1,100 +1,124 @@
 package org.shlimtech.typeeleven.web.grpc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.grpc.stub.ServerCallStreamObserver;
-import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.lognet.springboot.grpc.GRpcService;
-import org.shlimtech.typeeleven.domain.model.Message;
+import org.lognet.springboot.grpc.security.GrpcSecurity;
 import org.shlimtech.typeeleven.grpc.*;
 import org.shlimtech.typeeleven.service.core.ChattedMessengerService;
 import org.shlimtech.typeeleven.web.grpc.mapper.GrpcMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Log
 @GRpcService
 @RequiredArgsConstructor
-public class MessengerGrpcAdapter extends MessengerGrpc.MessengerImplBase {
+public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase {
     private final GrpcMapper grpcMapper;
     private final ChattedMessengerService messengerService;
-    private final ConcurrentMap<Integer, StreamObserver<ExchangeResponse>> connections = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Sinks.Many<ExchangeResponse>> connections = new ConcurrentHashMap<>();
     private final Base64.Decoder decoder = Base64.getUrlDecoder();
     private final ObjectMapper objectMapper;
 
     @Override
-    public void listUsers(EmptyRequest request, StreamObserver<ListUsersResponse> responseObserver) {
-        responseObserver.onNext(ListUsersResponse.newBuilder().addAllUsers(messengerService.listAvailableUsers().stream().map(grpcMapper::toGrpcUser).toList()).build());
-        responseObserver.onCompleted();
+    @Secured({})
+    public Mono<ListUsersResponse> listUsers(Mono<EmptyRequest> request) {
+        return getUserIdReactor().flatMapMany(id -> messengerService.listAvailableUsers())
+                .map(grpcMapper::toGrpcUser).collectList()
+                .map(list -> ListUsersResponse.newBuilder().addAllUsers(list).build());
     }
 
     @Override
-    public void listChats(EmptyRequest request, StreamObserver<ListChatsResponse> responseObserver) {
-        responseObserver.onNext(ListChatsResponse.newBuilder().addAllChats(messengerService.listChats(getUserId()).stream().map(grpcMapper::toGrpcChat).toList()).build());
-        responseObserver.onCompleted();
+    @Secured({})
+    public Mono<ListChatsResponse> listChats(Mono<EmptyRequest> request) {
+        return getUserIdReactor()
+                .flatMap(id -> messengerService.listChats(id).flatMap(chat -> messengerService.).collectList())
+                .map(list -> ListChatsResponse.newBuilder().addAllChats(list).build());
     }
 
     @Override
-    public void newChat(NewChatRequest request, StreamObserver<NewChatResponse> responseObserver) {;
-        responseObserver.onNext(NewChatResponse.newBuilder().setChat(grpcMapper.toGrpcChat(messengerService.createChat(List.of(getUserId(), request.getReceiverId())))).build());
-        responseObserver.onCompleted();
+    @Secured({})
+    public Mono<ListMessagesResponse> listMessages(Mono<ListMessagesRequest> request) {
+        return request.flatMap(requestData -> messengerService
+                .listMessages(requestData.getChatId(), requestData.getFromTime(), requestData.getCount())
+                .map(grpcMapper::toGrpcMessage).collectList())
+                .map(list -> ListMessagesResponse.newBuilder().addAllMessages(list).build());
     }
 
     @Override
-    public void listMessages(ListMessagesRequest request, StreamObserver<ListMessagesResponse> responseObserver) {
-        responseObserver.onNext(ListMessagesResponse.newBuilder().addAllMessages(messengerService.listMessages(request.getChatId(), request.getFromTime(), request.getCount()).stream().map(grpcMapper::toGrpcMessage).toList()).build());
-        responseObserver.onCompleted();
+    @Secured({})
+    public Mono<NewChatResponse> newChat(Mono<NewChatRequest> request) {
+        return getUserIdReactor().flatMap(userId -> request
+                .flatMap(requestData -> messengerService
+                        .createChat(List.of(userId, requestData.getReceiverId())))
+                .map(grpcMapper::toGrpcChat))
+                .map(chat -> NewChatResponse.newBuilder().setChat(chat).build());
     }
 
     @Override
-    public void receiveMessages(EmptyRequest request, StreamObserver<ExchangeResponse> responseObserver) {
-        int userId = getUserId();
-        if (connections.containsKey(userId)) {
-            connections.remove(userId).onCompleted();
-        }
-        connections.put(userId, responseObserver);
-    }
-
-    @Override
-    public void sendMessage(SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
-        int senderId = getUserId();
-        Message message = messengerService.newMessage(senderId, request.getChatId(), request.getContent());
-        Type11Message type11Message = grpcMapper.toGrpcMessage(message);
-        responseObserver.onNext(SendMessageResponse.newBuilder().setMessage(type11Message).build());
-        responseObserver.onCompleted();
-
-        message.getChat().getActiveUsers().forEach(userId -> {
-            if (senderId != userId) {
-                var stream = connections.get(userId);
-                if (stream != null) {
-                    try {
-                        stream.onNext(ExchangeResponse.newBuilder().setMessage(type11Message).build());
-                    } catch (Exception e) {
-                        connections.remove(userId);
-                    }
-                }
-            }
+    @Secured({})
+    public Flux<ExchangeResponse> receiveMessages(Mono<EmptyRequest> request) {
+        return getUserIdReactor().flatMapMany(userId -> {
+            Sinks.Many<ExchangeResponse> sink = Sinks.many().replay().latest();
+            connections.put(userId, sink);
+            return sink.asFlux();
         });
     }
 
-    @SneakyThrows
-    private int getUserId() {
-        String token = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String[] chunks = token.split("\\.");
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
+    @Override
+    @Secured({})
+    public Mono<SendMessageResponse> sendMessage(Mono<SendMessageRequest> request) {
+        return getUserIdReactor().flatMap(userId -> request
+                .flatMap(requestData -> messengerService
+                        .newMessage(userId, requestData.getChatId(), requestData.getContent())
+                        .flatMap(message -> Mono
+                                .just(grpcMapper.toGrpcMessage(message))
+                                .doOnNext(type11Message -> message.getChat().getActiveUsers().forEach(activeUserId -> {
+                                    if (activeUserId != userId) {
+                                        var stream = connections.get(activeUserId);
+                                        if (stream != null) {
+                                            try {
+                                                stream.tryEmitNext(ExchangeResponse.newBuilder().setMessage(type11Message).build());
+                                            } catch (Exception e) {
+                                                connections.remove(activeUserId);
+                                            }
+                                        }
+                                    }
+                                }))
+                        )
+                ))
+                .map(message -> SendMessageResponse.newBuilder().setMessage(message).build());
+    }
 
-        Map<String, String> headerMap = objectMapper.readValue(header, Map.class);
-        Map<String, String> payloadMap = objectMapper.readValue(payload, Map.class);
+    private Mono<Integer> getUserIdReactor() {
+        return Mono.just(GrpcSecurity.AUTHENTICATION_CONTEXT_KEY.get())
+                .cast(JwtAuthenticationToken.class)
+                .map(auth -> auth.getToken().getTokenValue())
+                .map(token -> token.split("\\."))
+                .map(chunks -> {
+                    String header = new String(decoder.decode(chunks[0]));
+                    String payload = new String(decoder.decode(chunks[1]));
 
-        return Integer.parseInt(payloadMap.get("id"));
+                    try {
+                        Map<String, String> headerMap = objectMapper.readValue(header, Map.class);
+                        Map<String, String> payloadMap = objectMapper.readValue(payload, Map.class);
+
+                        return Integer.parseInt(payloadMap.get("id"));
+                    } catch (JsonProcessingException e) {
+                        throw new AuthenticationCredentialsNotFoundException("Error parsing id from token", e);
+                    }
+                })
+                .onErrorMap(error -> new AuthenticationServiceException("Error while parsing token", error));
     }
 }
