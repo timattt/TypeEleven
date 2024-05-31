@@ -31,7 +31,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: timattt/type-11:latest
+          tags: type-11:latest
   deploy:
     needs: build
     runs-on: ubuntu-latest
