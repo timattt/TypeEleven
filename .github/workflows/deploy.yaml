@@ -20,7 +20,7 @@ jobs:
         uses: redhat-actions/push-to-registry@v2
         with:
           image: type-11
-          tags: timattt/type-11:latest
+          tags: latest
           registry: quay.io/timattt
           username: timattt
           password: ${{ secrets.QUAY_REGISTRY_PASSWORD }}
