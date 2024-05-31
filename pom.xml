@@ -9,26 +9,9 @@
 
     <packaging>pom</packaging>
 
-    <properties>
-        <reactor.version>3.6.5</reactor.version>
-    </properties>
-
     <modules>
         <module>ProtoCommon</module>
         <module>MessengerCore</module>
         <module>TypeSixBusinessLogic</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <version>${reactor.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>

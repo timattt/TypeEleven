@@ -43,7 +43,7 @@ public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase
     @Secured({})
     public Mono<ListChatsResponse> listChats(Mono<EmptyRequest> request) {
         return getUserIdReactor()
-                .flatMap(id -> messengerService.listChats(id).flatMap(chat -> messengerService.).collectList())
+                .flatMap(id -> messengerService.listChats(id).map(grpcMapper::toGrpcChat).collectList())
                 .map(list -> ListChatsResponse.newBuilder().addAllChats(list).build());
     }
 

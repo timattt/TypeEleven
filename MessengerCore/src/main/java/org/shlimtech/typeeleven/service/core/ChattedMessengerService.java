@@ -2,7 +2,7 @@ package org.shlimtech.typeeleven.service.core;
 
 import org.shlimtech.typeeleven.domain.model.Chat;
 import org.shlimtech.typeeleven.domain.model.Message;
-import org.shlimtech.typeeleven.domain.model.User;
+import org.shlimtech.typesixbusinesslogic.domain.model.User;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
