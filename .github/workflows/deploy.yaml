@@ -15,6 +15,14 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Build Image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: type-11
+          tags: latest
+          containerfiles: ./Dockerfile
+
       - name: Push To quay.io
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
@@ -24,14 +32,6 @@ jobs:
           registry: quay.io/timattt
           username: timattt
           password: ${{ secrets.QUAY_REGISTRY_PASSWORD }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: type-11:latest
   deploy:
     needs: build
     runs-on: ubuntu-latest
