@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
         - name: envoy
-          image: docker.io/envoyproxy/envoy:dev-1ffd4522cdb86ac62ad307d8f28a166e5261411b
+          image: cr.yandex/crp5pl9kfv4iu048v00l/envoy:31.05.2024
           volumeMounts:
             - name: envoy-config
               mountPath: /etc/envoy/envoy.yaml
               subPath: envoy.yaml
         - name: type-11
-          image: docker.io/timattt/type-11:latest
+          image: quay.io/timattt/type-11:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 9090
