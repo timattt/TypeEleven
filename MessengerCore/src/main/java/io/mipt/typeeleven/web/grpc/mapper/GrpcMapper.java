@@ -1,14 +1,12 @@
-package org.shlimtech.typeeleven.web.grpc.mapper;
+package io.mipt.typeeleven.web.grpc.mapper;
 
-import org.shlimtech.typeeleven.domain.model.Chat;
-import org.shlimtech.typeeleven.domain.model.Message;
-import org.shlimtech.typeeleven.grpc.Type11Chat;
-import org.shlimtech.typeeleven.grpc.Type11Message;
-import org.shlimtech.typeeleven.grpc.Type6User;
-import org.shlimtech.typesixbusinesslogic.domain.model.User;
+import io.mipt.typeeleven.domain.model.Chat;
+import io.mipt.typeeleven.domain.model.Message;
+import io.mipt.typeeleven.grpc.Type11Chat;
+import io.mipt.typeeleven.grpc.Type11Message;
+import io.mipt.typeeleven.grpc.Type6User;
+import io.mipt.typesix.businesslogic.domain.model.User;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 @Component
 public class GrpcMapper {

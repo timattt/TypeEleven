@@ -1,4 +1,4 @@
-package org.shlimtech.typeeleven.domain.model;
+package io.mipt.typeeleven.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;

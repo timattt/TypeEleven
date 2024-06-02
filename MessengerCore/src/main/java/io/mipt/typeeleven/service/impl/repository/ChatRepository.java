@@ -1,6 +1,6 @@
-package org.shlimtech.typeeleven.service.impl.repository;
+package io.mipt.typeeleven.service.impl.repository;
 
-import org.shlimtech.typeeleven.domain.model.Chat;
+import io.mipt.typeeleven.domain.model.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

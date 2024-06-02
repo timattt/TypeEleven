@@ -1,15 +1,15 @@
-package org.shlimtech.typeeleven.service.impl;
+package io.mipt.typeeleven.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.shlimtech.typeeleven.domain.model.Chat;
-import org.shlimtech.typeeleven.domain.model.Message;
-import org.shlimtech.typeeleven.service.core.ChattedMessengerService;
-import org.shlimtech.typeeleven.service.core.exception.MessengerException;
-import org.shlimtech.typeeleven.service.impl.repository.ChatRepository;
-import org.shlimtech.typeeleven.service.impl.repository.MessageRepository;
-import org.shlimtech.typesixbusinesslogic.domain.model.User;
-import org.shlimtech.typesixbusinesslogic.service.impl.repository.UserRepository;
+import io.mipt.typeeleven.domain.model.Chat;
+import io.mipt.typeeleven.domain.model.Message;
+import io.mipt.typeeleven.service.core.ChattedMessengerService;
+import io.mipt.typeeleven.service.core.exception.MessengerException;
+import io.mipt.typeeleven.service.impl.repository.ChatRepository;
+import io.mipt.typeeleven.service.impl.repository.MessageRepository;
+import io.mipt.typesix.businesslogic.domain.model.User;
+import io.mipt.typesix.businesslogic.service.impl.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

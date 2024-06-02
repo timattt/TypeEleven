@@ -1,4 +1,4 @@
-package org.shlimtech.typeeleven.domain.model;
+package io.mipt.typeeleven.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class Message {
     private long time;
     @ManyToOne
     @JoinColumn(name = "chat_id", referencedColumnName = "id")
-    private Chat chat;
+    private io.mipt.typeeleven.domain.model.Chat chat;
     @Column(name = "sender_id")
     private int senderId;
 }

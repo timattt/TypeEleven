@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>org.shlimtech.typeeleven.messenger</groupId>
+	<groupId>io.mipt.typeeleven.messenger</groupId>
 	<artifactId>TypeElevenMessenger</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -26,7 +26,7 @@
 			<version>5.1.5</version>
 		</dependency>
 		<dependency>
-			<groupId>org.shlimtech.typeeleven.common</groupId>
+			<groupId>io.mipt.typeeleven.common</groupId>
 			<artifactId>TypeElevenProtoCommon</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -67,7 +67,7 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.shlimtech.type-6.businessLogic</groupId>
+			<groupId>io.mipt.type-6.businessLogic</groupId>
 			<artifactId>TypeSixBusinessLogic</artifactId>
 			<version>0.1</version>
 		</dependency>

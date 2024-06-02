@@ -1,4 +1,4 @@
-package org.shlimtech.typeeleven.service.core.exception;
+package io.mipt.typeeleven.service.core.exception;
 
 public class MessengerException extends RuntimeException {
     public MessengerException(String message) {

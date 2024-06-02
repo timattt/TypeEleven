@@ -1,4 +1,4 @@
-package org.shlimtech.typeeleven.web.security;
+package io.mipt.typeeleven.web.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package org.shlimtech.typeeleven.web.grpc;
+package io.mipt.typeeleven.web.grpc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.lognet.springboot.grpc.GRpcService;
 import org.lognet.springboot.grpc.security.GrpcSecurity;
-import org.shlimtech.typeeleven.grpc.*;
-import org.shlimtech.typeeleven.service.core.ChattedMessengerService;
-import org.shlimtech.typeeleven.web.grpc.mapper.GrpcMapper;
+import io.mipt.typeeleven.grpc.*;
+import io.mipt.typeeleven.service.core.ChattedMessengerService;
+import io.mipt.typeeleven.web.grpc.mapper.GrpcMapper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationServiceException;
