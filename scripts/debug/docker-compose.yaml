@@ -4,8 +4,8 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USER: ${TYPE11_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${TYPE11_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${TYPE6_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${TYPE6_POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     healthcheck:
@@ -62,7 +62,7 @@ services:
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
   type-6:
-    image: docker.io/timattt/type-6
+    image: quay.io/timattt/type-6
     ports:
       - "7777:7777"
     volumes:

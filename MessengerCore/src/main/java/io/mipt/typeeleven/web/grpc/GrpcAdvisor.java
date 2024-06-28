@@ -21,4 +21,9 @@ public class GrpcAdvisor {
         exc.printStackTrace();
         return Status.INVALID_ARGUMENT.withDescription(exc.getMessage());
     }
+    @GRpcExceptionHandler
+    public Status handleException(Exception exc, GRpcExceptionScope scope) {
+        exc.printStackTrace();
+        return Status.INTERNAL.withDescription(exc.getMessage());
+    }
 }
