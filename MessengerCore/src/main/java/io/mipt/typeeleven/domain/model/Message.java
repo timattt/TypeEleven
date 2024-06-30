@@ -1,28 +1,20 @@
 package io.mipt.typeeleven.domain.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@Table
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class Message {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "content")
-    private String content;
-    @Column(name = "time")
-    private long time;
-    @ManyToOne
-    @JoinColumn(name = "chat_id", referencedColumnName = "id")
-    private io.mipt.typeeleven.domain.model.Chat chat;
-    @Column(name = "sender_id")
-    private int senderId;
+    private final int id;
+    private final String content;
+    private final long time;
+    private final int chatId;
+    private final int senderId;
 }

@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.messenger-changelog-master.yaml
+    include:
+      file: db/changelog/db.changelog-master.yaml
+  - changeSet:
+      id: 1
+      author: timattt
+      changes:
+        - createTable:
+            tableName: message
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  type: BIGINT
+              - column:
+                  name: chat_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sender_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: chat
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+        - createTable:
+            tableName: chat_active_users
+            columns:
+              - column:
+                  name: chat_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: active_user
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false

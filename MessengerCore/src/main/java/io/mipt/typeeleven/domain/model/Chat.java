@@ -1,21 +1,19 @@
 package io.mipt.typeeleven.domain.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
-@Entity
 @Data
-@RequiredArgsConstructor
+@Table
 @Builder
 @AllArgsConstructor
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
-    private List<Message> messages;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Integer> activeUsers;
+    private final int id;
+    private final List<Integer> activeUsers;
 }

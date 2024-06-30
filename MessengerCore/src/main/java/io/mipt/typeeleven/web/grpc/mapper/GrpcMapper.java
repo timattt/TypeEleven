@@ -14,7 +14,7 @@ public class GrpcMapper {
         return Type11Message.newBuilder()
                 .setContent(message.getContent())
                 .setId(message.getId())
-                .setChatId(message.getChat().getId())
+                .setChatId(message.getChatId())
                 .setTime(message.getTime())
                 .setSenderId(message.getSenderId())
                 .build();

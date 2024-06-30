@@ -5,7 +5,7 @@ import lombok.extern.java.Log;
 import org.lognet.springboot.grpc.recovery.GRpcExceptionHandler;
 import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
 import org.lognet.springboot.grpc.recovery.GRpcServiceAdvice;
-import io.mipt.typeeleven.service.core.exception.MessengerException;
+import io.mipt.typeeleven.service.core.exception.TypeElevenMessengerException;
 import org.springframework.security.core.AuthenticationException;
 
 @Log
@@ -17,7 +17,7 @@ public class GrpcAdvisor {
         return Status.UNAUTHENTICATED.withDescription(exc.getMessage());
     }
     @GRpcExceptionHandler
-    public Status handleService(MessengerException exc, GRpcExceptionScope scope) {
+    public Status handleService(TypeElevenMessengerException exc, GRpcExceptionScope scope) {
         exc.printStackTrace();
         return Status.INVALID_ARGUMENT.withDescription(exc.getMessage());
     }

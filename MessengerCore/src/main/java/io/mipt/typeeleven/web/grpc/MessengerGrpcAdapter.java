@@ -7,7 +7,7 @@ import lombok.extern.java.Log;
 import org.lognet.springboot.grpc.GRpcService;
 import org.lognet.springboot.grpc.security.GrpcSecurity;
 import io.mipt.typeeleven.grpc.*;
-import io.mipt.typeeleven.service.core.ChattedMessengerService;
+import io.mipt.typeeleven.service.core.TypeElevenMessengerService;
 import io.mipt.typeeleven.web.grpc.mapper.GrpcMapper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentMap;
 @RequiredArgsConstructor
 public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase {
     private final GrpcMapper grpcMapper;
-    private final ChattedMessengerService messengerService;
+    private final TypeElevenMessengerService messengerService;
     private final ConcurrentMap<Integer, Sinks.Many<ExchangeResponse>> connections = new ConcurrentHashMap<>();
     private final Base64.Decoder decoder = Base64.getUrlDecoder();
     private final ObjectMapper objectMapper;
@@ -84,7 +84,7 @@ public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase
                         .newMessage(userId, requestData.getChatId(), requestData.getContent())
                         .flatMap(message -> Mono
                                 .just(grpcMapper.toGrpcMessage(message))
-                                .doOnNext(type11Message -> message.getChat().getActiveUsers().forEach(activeUserId -> {
+                                .doOnNext(type11Message -> messengerService.listActiveUsersForMessageChat(type11Message.getId()).doOnNext(activeUserId -> {
                                     if (activeUserId != userId) {
                                         var stream = connections.get(activeUserId);
                                         if (stream != null) {
