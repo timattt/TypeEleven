@@ -21,13 +21,11 @@ public class GrpcMapper {
     }
 
     public Type6User toGrpcUser(User user) {
-        String firstName = user.getFirstName();
-        String lastName = user.getLastName();
         return Type6User.newBuilder()
                 .setId(user.getId())
                 .setEmail(user.getEmail())
-                .setFirstName(firstName == null ? "" : firstName)
-                .setLastName(lastName == null ? "" : lastName)
+                .setFirstName(String.valueOf(user.getFirstName()))
+                .setLastName(String.valueOf(user.getLastName()))
                 .build();
     }
 

@@ -1,4 +1,4 @@
-package io.mipt.typeeleven.web.grpc;
+package io.mipt.typeeleven.web.grpc.exception;
 
 import io.grpc.Status;
 import lombok.extern.java.Log;
@@ -13,17 +13,14 @@ import org.springframework.security.core.AuthenticationException;
 public class GrpcAdvisor {
     @GRpcExceptionHandler
     public Status handleAuth(AuthenticationException exc, GRpcExceptionScope scope) {
-        exc.printStackTrace();
         return Status.UNAUTHENTICATED.withDescription(exc.getMessage());
     }
     @GRpcExceptionHandler
     public Status handleService(TypeElevenMessengerException exc, GRpcExceptionScope scope) {
-        exc.printStackTrace();
         return Status.INVALID_ARGUMENT.withDescription(exc.getMessage());
     }
     @GRpcExceptionHandler
     public Status handleException(Exception exc, GRpcExceptionScope scope) {
-        exc.printStackTrace();
         return Status.INTERNAL.withDescription(exc.getMessage());
     }
 }

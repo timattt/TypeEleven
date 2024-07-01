@@ -14,6 +14,7 @@ services:
       timeout: 1s
       retries: 100
     user: postgres
+    command: ["postgres", "-c", "log_statement=all"]
   envoy:
     image: envoyproxy/envoy:dev-1ffd4522cdb86ac62ad307d8f28a166e5261411b
     ports:

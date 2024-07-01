@@ -49,7 +49,7 @@ public class TypeElevenMessengerServiceTests extends BaseTest {
     private User user3;
 
     @Container
-    protected static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    protected static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest").withCommand("postgres", "-c", "log_statement=all");
 
     @BeforeAll
     static void beforeAll() {

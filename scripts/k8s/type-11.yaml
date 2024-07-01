@@ -34,6 +34,11 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_jdbc_url
+            - name: TYPE11_REACTIVE_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_database_r2dbc_url
             - name: TYPE11_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
