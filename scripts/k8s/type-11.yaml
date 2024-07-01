@@ -44,8 +44,8 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_password
-            - name: POSTGRES_SSL_ENABLED
-              value: "true"
+            - name: TYPE11_ACTIVE_PROFILE
+              value: "release"
       volumes:
         - name: envoy-config
           configMap:
