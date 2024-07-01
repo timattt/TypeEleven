@@ -40,6 +40,7 @@ services:
       TYPE6_POSTGRES_PASSWORD: ${TYPE6_POSTGRES_PASSWORD}
       TYPE11_JWKS: http://type-6:7777/oauth2/jwks
       TYPE11_REACTIVE_POSTGRES_URL: "r2dbc:postgresql://postgres:5432/postgres"
+      POSTGRES_SSL_ENABLED: "false"
   rabbit:
     image: rabbitmq:management
     hostname: rabbitmq

@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
         "spring.r2dbc.username=tmp_user",
         "spring.r2dbc.password=tmp_password",
         "logging.level.org.springframework.data.r2dbc=DEBUG",
+        "spring.r2dbc.properties.ssl=false",
         // LIQUIBASE
         "spring.liquibase.url=jdbc:h2:mem:~/db/postgres;DB_CLOSE_DELAY=-1",
         "spring.liquibase.user=tmp_user",
