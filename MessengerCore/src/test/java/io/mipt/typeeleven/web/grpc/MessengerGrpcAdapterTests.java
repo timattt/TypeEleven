@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ExecutionException;
 
 import static io.mipt.typeeleven.web.grpc.TestClientConfig.DEFAULT_TOKEN_CLAIM_USER_ID;
 import static org.mockito.Mockito.*;
@@ -130,7 +129,7 @@ public class MessengerGrpcAdapterTests extends BaseTest {
     }
 
     @Test
-    public void sendAndReceiveMessageSimpleTest() {
+    public void sendAndReceiveMessageSimpleTest() throws InterruptedException {
         final int chatId = 244;
         final int otherId = 45;
         final int count = 1;
@@ -143,8 +142,9 @@ public class MessengerGrpcAdapterTests extends BaseTest {
         when(typeElevenMessengerService.listActiveUsersForMessageChat(eq(messageId))).thenReturn(Flux.just(otherId, DEFAULT_TOKEN_CLAIM_USER_ID));
 
         ids.add(otherId);
-
         var iterator = securedClient.receiveMessages(EmptyRequest.newBuilder().build());
+
+        Thread.sleep(1000);
 
         var sent = securedClient.sendMessage(SendMessageRequest.newBuilder().setContent(content).setChatId(chatId).build()).getMessage();
 
@@ -155,7 +155,7 @@ public class MessengerGrpcAdapterTests extends BaseTest {
     }
 
     @Test
-    public void sendAndReceiveMessageMessageTimingTest() throws ExecutionException, InterruptedException {
+    public void sendAndReceiveMessageMessageTimingTest() throws InterruptedException {
         final int firstId = 100;
         final int secondId = 200;
         final int thirdId = 300;

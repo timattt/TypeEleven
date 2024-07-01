@@ -35,10 +35,11 @@ services:
     depends_on:
       - postgres
     environment:
-      TYPE11_POSTGRES_URL: "jdbc:postgresql://postgres:5432/postgres"
-      TYPE11_POSTGRES_USER: ${TYPE11_POSTGRES_USER}
-      TYPE11_POSTGRES_PASSWORD: ${TYPE11_POSTGRES_PASSWORD}
+      TYPE6_POSTGRES_URL: "jdbc:postgresql://postgres:5432/postgres"
+      TYPE6_POSTGRES_USER: ${TYPE6_POSTGRES_USER}
+      TYPE6_POSTGRES_PASSWORD: ${TYPE6_POSTGRES_PASSWORD}
       TYPE11_JWKS: http://type-6:7777/oauth2/jwks
+      TYPE11_REACTIVE_POSTGRES_URL: "r2dbc:postgresql://postgres:5432/postgres"
   rabbit:
     image: rabbitmq:management
     hostname: rabbitmq

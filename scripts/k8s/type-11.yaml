@@ -27,9 +27,9 @@ spec:
           env:
             - name: TYPE11_JWKS
               value: http://type-6.default.svc.cluster.local:443/oauth2/jwks
-            - name: TYPE11_POSTGRES_USER
+            - name: TYPE6_POSTGRES_USER
               value: default-user
-            - name: TYPE11_POSTGRES_URL
+            - name: TYPE6_POSTGRES_URL
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets
@@ -39,7 +39,7 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_r2dbc_url
-            - name: TYPE11_POSTGRES_PASSWORD
+            - name: TYPE6_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets

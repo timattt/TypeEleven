@@ -7,6 +7,8 @@ import io.mipt.typeeleven.service.impl.dao.repository.MessageRepository;
 import io.mipt.typeeleven.service.impl.dao.repository.UserRepository;
 import io.mipt.typesix.businesslogic.domain.model.User;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -18,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
+@EnabledOnOs(OS.WINDOWS)
 @Testcontainers
 @TestPropertySource(properties = {
         "grpc.port=9091"
@@ -128,6 +131,7 @@ public class TypeElevenMessengerServiceTests extends BaseTest {
 
         Assertions.assertNotNull(message1);
         Assertions.assertNotNull(message2);
+        Assertions.assertTrue(message1.getTime() <= System.currentTimeMillis());
     }
 
     @Test

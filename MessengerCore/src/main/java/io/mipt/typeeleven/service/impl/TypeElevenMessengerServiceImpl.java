@@ -80,6 +80,7 @@ public class TypeElevenMessengerServiceImpl implements TypeElevenMessengerServic
                         .content(content)
                         .chatId(chatId)
                         .senderId(senderId)
+                        .time(System.currentTimeMillis())
                         .build())
                 .onErrorMap(error -> new TypeElevenMessengerException("error while adding message", error));
     }

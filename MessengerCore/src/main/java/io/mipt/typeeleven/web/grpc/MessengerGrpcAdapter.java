@@ -69,6 +69,7 @@ public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase
                                 .listActiveUsersForMessageChat(exchangeResponse.getMessage().getId())
                                 .any(activeId -> activeId.equals(userId))
                         )
+                        .filter(exchangeResponse -> exchangeResponse.getMessage().getSenderId() != userId)
                 );
     }
 
@@ -91,8 +92,7 @@ public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase
         return Mono.just(GrpcSecurity.AUTHENTICATION_CONTEXT_KEY.get())
                 .cast(JwtAuthenticationToken.class)
                 .map(auth -> auth.getToken().getClaims())
-                .map(claims -> claims.get("id"))
-                .cast(Integer.class)
+                .map(claims -> Integer.parseInt(claims.get("id").toString()))
                 .onErrorMap(error -> new AuthenticationServiceException("Error while parsing token", error));
     }
 }
