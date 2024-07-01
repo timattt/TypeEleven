@@ -6,22 +6,16 @@ import io.mipt.typeeleven.service.impl.dao.repository.ChatRepository;
 import io.mipt.typeeleven.service.impl.dao.repository.MessageRepository;
 import io.mipt.typeeleven.service.impl.dao.repository.UserRepository;
 import io.mipt.typesix.businesslogic.domain.model.User;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-@EnabledOnOs(OS.WINDOWS)
-@Testcontainers
 @TestPropertySource(properties = {
         "grpc.port=9091"
 })
@@ -50,30 +44,6 @@ public class TypeElevenMessengerServiceTests extends BaseTest {
     private User user1;
     private User user2;
     private User user3;
-
-    @Container
-    protected static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest").withCommand("postgres", "-c", "log_statement=all");
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.liquibase.url", postgres::getJdbcUrl);
-        registry.add("spring.liquibase.user", postgres::getUsername);
-        registry.add("spring.liquibase.password", postgres::getPassword);
-
-        registry.add("spring.r2dbc.url", () -> postgres.getJdbcUrl().replace("jdbc", "r2dbc"));
-        registry.add("spring.r2dbc.username", postgres::getUsername);
-        registry.add("spring.r2dbc.password", postgres::getPassword);
-    }
 
     @BeforeEach
     @Transactional

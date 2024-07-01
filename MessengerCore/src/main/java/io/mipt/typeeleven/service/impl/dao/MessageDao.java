@@ -26,7 +26,7 @@ public class MessageDao {
                 .bind("chatId", chatId)
                 .bind("senderId", senderId)
                 .filter(statement -> statement.returnGeneratedValues("id"))
-                .map(row -> row.get("id", Integer.class))
+                .map(row -> Integer.parseInt(row.get("id").toString()))
                 .first();
     }
 

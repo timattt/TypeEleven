@@ -27,7 +27,7 @@ public class ChatDao {
         return databaseClient
                 .sql("insert into chat DEFAULT VALUES")
                 .filter(statement -> statement.returnGeneratedValues("id"))
-                .map(row -> row.get("id", Integer.class))
+                .map(row -> Integer.parseInt(row.get("id").toString()))
                 .first();
     }
 
