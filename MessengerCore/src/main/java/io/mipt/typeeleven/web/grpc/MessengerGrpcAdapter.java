@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.lognet.springboot.grpc.GRpcService;
 import org.lognet.springboot.grpc.security.GrpcSecurity;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -15,7 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Log
@@ -25,14 +23,6 @@ public class MessengerGrpcAdapter extends ReactorMessengerGrpc.MessengerImplBase
     private final GrpcMapper grpcMapper;
     private final TypeElevenMessengerService messengerService;
     private final Sinks.Many<ExchangeResponse> sink = Sinks.many().multicast().directBestEffort();
-
-    @Value("${spring.r2dbc.url}")
-    private String url;
-
-    @PostConstruct
-    public void after() {
-        System.out.println(url);
-    }
 
     @Override
     @Secured({})
