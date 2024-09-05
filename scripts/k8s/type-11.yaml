@@ -44,8 +44,8 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_password
-            - name: TYPE11_ACTIVE_PROFILE
-              value: "release"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "k8s"
       volumes:
         - name: envoy-config
           configMap:
